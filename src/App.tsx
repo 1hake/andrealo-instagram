@@ -6,6 +6,7 @@ import hero from "./assets/hero.png";
 import textbackground from "./assets/textbackground.jpeg";
 import { Card } from "./components/Card";
 import { data } from "./data/data";
+import { Header } from "./components/Header";
 
 const Photobackground = () => {
   return (
@@ -21,7 +22,7 @@ const Photobackground = () => {
 
 const TextBackGround = () => {
   return (
-    <div className=" w-screen   z-1">
+    <div className=" w-screen z-1">
       <div className="bg-backgroundTexture justify-center top-0 left-0 w-screen flex">
         <img
           src={textbackground}
@@ -36,7 +37,9 @@ const TextBackGround = () => {
 const HeaderMarginWrapper = ({ isSmall, children }: any) => {
   return (
     <div
-      className={` bg-black bg-cover flex flex-wrap justify-center gap-16 lg:p-20 z-100 pt-10`}
+      className={`${
+        !isSmall ? "mt-[h-screen/2]" : ""
+      } bg-black bg-cover flex flex-wrap justify-center gap-16 lg:p-20 z-100 pt-10 `}
     >
       {children}
     </div>
@@ -44,36 +47,25 @@ const HeaderMarginWrapper = ({ isSmall, children }: any) => {
 };
 
 function App() {
-  // const [stickyClass, setStickyClass] = useState("relative");
+  const [shrink, setShrink] = useState(false);
 
-  // const [isShown, setIsShown] = useState(false);
-  // console.log("🚀 ~ file: App.tsx:43 ~ App ~ isShown", isShown);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShrink(true);
+      } else {
+        setShrink(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
 
-  const isShown: boolean = true;
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", stickNavbar);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", stickNavbar);
-  //   };
-  // }, []);
-
-  // const stickNavbar = () => {
-  //   if (window !== undefined) {
-  //     let windowHeight = window.scrollY;
-  //     console.log(
-  //       "🚀 ~ file: App.tsx:56 ~ stickNavbar ~ windowHeight",
-  //       windowHeight
-  //     );
-  //     windowHeight > 400 ? setIsShown(true) : setIsShown(false);
-  //   }
-  // };
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <>
-      {isShown ? (
-        <div className=" w-screen bg-black  z-1">
+    <div className="flex flex-col">
+      {/* {shrink ? (
+        <div className="shrink w-screen bg-black  z-1">
           <div className="bg-black justify-center  w-screen flex  z-50">
             <img
               src={textbackground}
@@ -83,9 +75,9 @@ function App() {
           </div>
         </div>
       ) : (
-        <div className=" w-screen h-screen/2 z-1">
+        <div className="shrink w-screen  h-screen/2 z-1">
           <div className="bg-[#d0d1d6]  top-0 left-0 w-screen h-screen/2 flex">
-            <div className={`bg-backgroundLight h-screen/2 w-full  `}></div>
+            <div className={`bg-backgroundLight min-h-min w-full  `}></div>
             <img
               src={hero}
               alt="react logo"
@@ -94,18 +86,20 @@ function App() {
             <div className="bg-backgroundTexture h-screen/2 w-full "></div>
           </div>
         </div>
-      )}
+      )} */}
 
-      <HeaderMarginWrapper isSmall={isShown}>
+      <Header shrink={shrink}></Header>
+
+      <HeaderMarginWrapper isSmall={shrink}>
         <>
           {data.map((item, index) => {
-            return <Card key={index} embedId={item.id} name={item.name} />;
+            return <Card key={index} item={item} />;
           })}
         </>
       </HeaderMarginWrapper>
 
       <div className="bg-black bg-cover flex flex-wrap justify-center w-full h-40"></div>
-    </>
+    </div>
   );
 }
 

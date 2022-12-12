@@ -13,6 +13,8 @@ module.exports = {
       backgroundImage: {
         backgroundTexture: "url('/src/assets/background.png')",
         backgroundTextureLight: "url('/src/assets/backgroundLight.png')",
+        hero: "url('/src/assets/hero.png')",
+        textBackground: "url('/src/assets/textBackground.png')",
         instagramIcon: "url('/src/assets/instagram.png')",
         soundcloudIcon: "url('/src/assets/soundcloud.png')",
         spotifyIcon: "url('/src/assets/spotify.png')",
