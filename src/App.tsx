@@ -36,7 +36,7 @@ const TextBackGround = () => {
 const HeaderMarginWrapper = ({ isSmall, children }: any) => {
   return (
     <div
-      className={` bg-black bg-cover flex flex-wrap justify-center gap-16 lg:p-20 z-100 pt-10`}
+      className={` bg-black bg-cover flex flex-wrap justify-center gap-16 lg:p-20 z-100 pt-10 `}
     >
       {children}
     </div>
@@ -51,24 +51,16 @@ function App() {
 
   const isShown: boolean = true;
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", stickNavbar);
+  const [dataFetched, setDataFetched] = useState<any>([]);
 
-  //   return () => {
-  //     window.removeEventListener("scroll", stickNavbar);
-  //   };
-  // }, []);
-
-  // const stickNavbar = () => {
-  //   if (window !== undefined) {
-  //     let windowHeight = window.scrollY;
-  //     console.log(
-  //       "🚀 ~ file: App.tsx:56 ~ stickNavbar ~ windowHeight",
-  //       windowHeight
-  //     );
-  //     windowHeight > 400 ? setIsShown(true) : setIsShown(false);
-  //   }
-  // };
+  useEffect(() => {
+    fetch("https://gobc.fr/datas/data.json")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        setDataFetched(data);
+      });
+  }, []);
 
   return (
     <>
@@ -78,7 +70,7 @@ function App() {
             <img
               src={textbackground}
               alt="react logo"
-              className="lg:min-w-min h-36 lg:h-48"
+              className=" h-36 lg:h-48"
             />
           </div>
         </div>
@@ -98,13 +90,14 @@ function App() {
 
       <HeaderMarginWrapper isSmall={isShown}>
         <>
-          {data.map((item, index) => {
-            return <Card key={index} embedId={item.id} name={item.name} />;
-          })}
+          {dataFetched &&
+            dataFetched.map((item, index) => {
+              return <Card key={index} item={item} />;
+            })}
         </>
       </HeaderMarginWrapper>
 
-      <div className="bg-black bg-cover flex flex-wrap justify-center w-full h-40"></div>
+      <div className="bg-black bg-cover flex flex-wrap justify-center w-full h-20"></div>
     </>
   );
 }
